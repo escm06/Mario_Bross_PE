@@ -7,7 +7,7 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     >
 
     <meta name="theme-color" content="#07111f">
@@ -654,7 +654,35 @@
         </div>
 
     </div>
+<!-- ALERTA CUANDO QUEDA UNA SOLA VIDA -->
+<div
+    id="lifeWarning"
+    class="life-warning"
+    role="alert"
+    aria-live="assertive"
+>
+    <div class="life-warning-content">
 
+        <img
+            src="assets/images/ultima-vida.jpeg"
+            alt="Advertencia de última vida"
+            class="life-warning-image"
+        >
+
+        <p class="life-warning-text">
+            Te queda una vida conchadetumdre,
+            ponte 11 huevon
+        </p>
+
+    </div>
+</div>
+
+<!-- Sonido de advertencia -->
+<audio
+    id="lifeWarningSound"
+    src="assets/audio/fahhhh.mp3"
+    preload="auto"
+></audio>
     <!-- PANTALLA DE PAUSA -->
     <div id="pausePanel" class="game-panel">
         <div class="game-panel-content">
@@ -704,6 +732,26 @@
             loop
         ></audio>
 
+        <!-- AVISO DE ORIENTACIÓN PARA TELÉFONOS -->
+<div
+    id="rotateDeviceWarning"
+    class="rotate-device-warning"
+>
+    <div class="rotate-device-content">
+
+        <div class="rotate-phone-icon">
+            📱
+        </div>
+
+        <h2>Gira tu teléfono</h2>
+
+        <p>
+            Para jugar mejor, coloca tu dispositivo
+            en posición horizontal.
+        </p>
+
+    </div>
+</div>
 
     </main>
 

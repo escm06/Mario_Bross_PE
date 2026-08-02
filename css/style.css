@@ -2326,3 +2326,254 @@ and (orientation: landscape) {
         height: 64px;
     }
 }
+/* =====================================================
+   ALERTA DE ÚLTIMA VIDA
+===================================================== */
+
+.life-warning {
+    position: absolute;
+    inset: 0;
+    z-index: 45;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    background: rgba(18, 0, 0, 0.32);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.life-warning.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.life-warning-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    width: min(92%, 620px);
+    padding: 15px;
+
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(24, 28, 36, 0.96),
+        rgba(117, 12, 22, 0.96)
+    );
+
+    box-shadow:
+        0 8px 0 #4d0710,
+        0 18px 40px rgba(0, 0, 0, 0.55);
+
+    transform: scale(0.2) rotate(-7deg);
+}
+
+.life-warning.visible .life-warning-content {
+    animation:
+        lifeWarningAppear 0.45s ease-out forwards,
+        lifeWarningShake 0.16s linear 0.45s 5;
+}
+
+.life-warning-image {
+    width: clamp(105px, 22vw, 180px);
+    height: clamp(105px, 22vw, 180px);
+
+    flex-shrink: 0;
+    object-fit: cover;
+
+    border: 4px solid #ffd642;
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 18px rgba(255, 214, 66, 0.65);
+}
+
+.life-warning-text {
+    margin: 0;
+
+    color: #ffffff;
+    font-size: clamp(17px, 3vw, 29px);
+    font-weight: 900;
+    line-height: 1.15;
+    text-align: center;
+
+    text-shadow:
+        0 3px 0 #000000,
+        0 5px 10px rgba(0, 0, 0, 0.75);
+}
+
+@keyframes lifeWarningAppear {
+    0% {
+        transform: scale(0.2) rotate(-7deg);
+    }
+
+    65% {
+        transform: scale(1.12) rotate(3deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes lifeWarningShake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-9px) rotate(-1deg);
+    }
+
+    75% {
+        transform: translateX(9px) rotate(1deg);
+    }
+}
+
+@media (max-width: 600px) {
+    .life-warning-content {
+        gap: 10px;
+        padding: 11px;
+        border-width: 3px;
+        border-radius: 18px;
+    }
+
+    .life-warning-image {
+        width: 95px;
+        height: 95px;
+        border-radius: 14px;
+    }
+
+    .life-warning-text {
+        font-size: 16px;
+    }
+}
+/* =====================================================
+   PANTALLA COMPLETA Y ORIENTACIÓN DEL TELÉFONO
+===================================================== */
+
+html,
+body,
+#app {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+@supports (height: 100dvh) {
+    html,
+    body,
+    #app {
+        height: 100dvh;
+        min-height: 100dvh;
+    }
+}
+
+/* Oculto normalmente */
+
+.rotate-device-warning {
+    display: none;
+}
+
+/* Solo aparece en teléfonos colocados verticalmente */
+
+@media
+    (max-width: 900px)
+    and (orientation: portrait)
+    and (pointer: coarse) {
+
+    .rotate-device-warning {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+
+        display: grid;
+        place-items: center;
+
+        padding:
+            max(20px, env(safe-area-inset-top))
+            max(20px, env(safe-area-inset-right))
+            max(20px, env(safe-area-inset-bottom))
+            max(20px, env(safe-area-inset-left));
+
+        color: white;
+        text-align: center;
+
+        background:
+            radial-gradient(
+                circle at center,
+                #1979ad 0%,
+                #083b64 60%,
+                #041b32 100%
+            );
+    }
+
+    .rotate-device-content {
+        width: min(90%, 420px);
+        padding: 30px 22px;
+
+        border: 3px solid rgba(255, 255, 255, 0.75);
+        border-radius: 28px;
+
+        background: rgba(4, 26, 46, 0.58);
+
+        box-shadow:
+            0 12px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .rotate-phone-icon {
+        margin-bottom: 18px;
+        font-size: 74px;
+
+        animation:
+            rotatePhone 1.8s ease-in-out infinite;
+    }
+
+    .rotate-device-content h2 {
+        margin: 0 0 12px;
+
+        color: #ffe357;
+        font-size: clamp(27px, 8vw, 42px);
+
+        text-shadow:
+            0 3px 0 #8c4d13,
+            0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .rotate-device-content p {
+        margin: 0;
+
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+}
+
+@keyframes rotatePhone {
+    0%,
+    20% {
+        transform: rotate(0deg);
+    }
+
+    70%,
+    100% {
+        transform: rotate(90deg);
+    }
+}

@@ -27,7 +27,13 @@
     const hudSoles = document.getElementById("hudSoles");
     const hudTimer = document.getElementById("hudTimer");
     const gameMessage = document.getElementById("gameMessage");
+        const lifeWarning =
+        document.getElementById("lifeWarning");
 
+    const lifeWarningSound =
+        document.getElementById("lifeWarningSound");
+
+    let lifeWarningTimeout = null;
     const pauseButton = document.getElementById("pauseButton");
     const continueButton = document.getElementById("continueGameButton");
     const restartButton = document.getElementById("restartLevelButton");
@@ -828,7 +834,36 @@
     /* =====================================================
        DAÑO Y PELIGROS
     ===================================================== */
+    function showLastLifeWarning() {
+        if (!lifeWarning) {
+            return;
+        }
 
+        clearTimeout(lifeWarningTimeout);
+
+        lifeWarning.classList.remove("visible");
+
+        /* Reinicia la animación */
+        void lifeWarning.offsetWidth;
+
+        lifeWarning.classList.add("visible");
+
+        if (lifeWarningSound) {
+            lifeWarningSound.pause();
+            lifeWarningSound.currentTime = 0;
+            lifeWarningSound.volume = 0.85;
+
+            lifeWarningSound.play().catch(() => {
+                console.log(
+                    "El navegador no pudo reproducir la alerta."
+                );
+            });
+        }
+
+        lifeWarningTimeout = setTimeout(() => {
+            lifeWarning.classList.remove("visible");
+        }, 3000);
+    }
     function checkDangerZones() {
         spikes.forEach((spike) => {
             if (
@@ -860,8 +895,12 @@
             return;
         }
 
-        lives -= 1;
+            lives -= 1;
         player.invulnerable = 1.8;
+
+        if (lives === 1) {
+            showLastLifeWarning();
+        }
 
         playSound("damage");
         updateHUD();
