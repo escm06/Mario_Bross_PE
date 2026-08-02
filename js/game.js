@@ -50,6 +50,8 @@
     const GRAVITY = 2200;
 
     let viewWidth = 1280;
+    let viewHeight = VIEW_HEIGHT;
+    let verticalOffset = 0;
     let gameState = "menu";
     let lastTime = 0;
     let levelTime = 0;
@@ -1104,7 +1106,7 @@
 
     function draw() {
         const scaleX = canvas.width / viewWidth;
-        const scaleY = canvas.height / VIEW_HEIGHT;
+        const scaleY = canvas.height / viewHeight;
 
         ctx.setTransform(
             scaleX,
@@ -1119,13 +1121,16 @@
             0,
             0,
             viewWidth,
-            VIEW_HEIGHT
+         viewHeight
         );
 
         drawBackground();
 
         ctx.save();
-        ctx.translate(-camera.x, 0);
+        ctx.translate(
+        -camera.x,
+        -verticalOffset
+        );
 
         drawRiver();
         drawTutorialSigns();
@@ -2588,30 +2593,54 @@
     /* =====================================================
        CANVAS RESPONSIVO
     ===================================================== */
-
     function resizeCanvas() {
-        const pixelRatio = Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
-
         const screenWidth =
             Math.max(window.innerWidth, 320);
 
         const screenHeight =
             Math.max(window.innerHeight, 240);
 
+        const isPhoneLandscape =
+            screenWidth > screenHeight &&
+            window.matchMedia(
+                "(pointer: coarse)"
+            ).matches;
+
+        /*
+         * En teléfonos horizontales se utiliza
+         * mayor resolución y una cámara más cercana.
+         */
+        const pixelRatio = Math.min(
+            window.devicePixelRatio || 1,
+            isPhoneLandscape ? 3 : 2
+        );
+
+        if (isPhoneLandscape) {
+            viewHeight = 560;
+            verticalOffset = 160;
+        } else {
+            viewHeight = VIEW_HEIGHT;
+            verticalOffset = 0;
+        }
+
         viewWidth =
-            VIEW_HEIGHT *
+            viewHeight *
             (screenWidth / screenHeight);
 
         canvas.width =
-            Math.floor(screenWidth * pixelRatio);
+            Math.floor(
+                screenWidth * pixelRatio
+            );
 
         canvas.height =
-            Math.floor(screenHeight * pixelRatio);
-    }
+            Math.floor(
+                screenHeight * pixelRatio
+            );
 
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+    }
+  
     window.addEventListener(
         "resize",
         resizeCanvas
