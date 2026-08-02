@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    >
+
+    <meta name="theme-color" content="#07111f">
+
+    <title>
+        Mario PE - Aventura Peruana
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main id="app">
+
+
+        <!-- =========================================
+             PANTALLA DE CARGA
+        ========================================== -->
+
+        <section
+            id="loadingScreen"
+            class="screen loading-screen active"
+            aria-label="Pantalla de carga"
+        >
+
+            <div class="blurred-background"></div>
+
+
+            <div class="artwork-container">
+
+                <img
+                    src="assets/images/pantalla-carga.png"
+                    alt="Mario PE - Aventura Peruana"
+                    class="loading-artwork"
+                >
+
+            </div>
+
+
+            <div class="vignette"></div>
+
+
+            <div
+                id="particles"
+                class="particles"
+            ></div>
+
+
+            <div class="loading-panel">
+
+                <div class="loading-information">
+
+                    <span id="loadingText">
+
+                        Cargando aventura...
+
+                    </span>
+
+
+                    <strong id="percentage">
+
+                        0%
+
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="progress-track"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                >
+
+                    <div
+                        id="progressBar"
+                        class="progress-bar"
+                    >
+
+                        <span class="progress-shine"></span>
+
+                    </div>
+
+                </div>
+
+
+                <p id="loadingTip">
+
+                    Preparando los caminos del Perú
+
+                </p>
+
+            </div>
+
+
+            <button
+                id="continueButton"
+                class="continue-button"
+                type="button"
+            >
+
+                <span class="play-icon">
+
+                    ▶
+
+                </span>
+
+
+                <span class="button-text">
+
+                    <small>
+
+                        AVENTURA LISTA
+
+                    </small>
+
+                    INICIAR JUEGO
+
+                </span>
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SELECCIÓN DE NIVELES
+        ========================================== -->
+
+        <section
+            id="nextScreen"
+            class="screen level-screen"
+            aria-label="Selección de niveles"
+        >
+
+
+            <!-- Fondo desenfocado -->
+
+            <div class="level-blurred-background"></div>
+
+
+            <!-- Imagen principal del mapa -->
+
+            <div class="level-artwork-container">
+
+                <img
+                    src="assets/images/seleccion-niveles.png"
+                    alt="Mapa de selección de niveles"
+                    class="level-artwork"
+                >
+
+            </div>
+
+
+            <!-- Oscurecimiento de los bordes -->
+
+            <div class="level-vignette"></div>
+
+
+
+            <!-- =====================================
+                 INFORMACIÓN SUPERIOR
+            ====================================== -->
+
+            <header class="level-header">
+
+                <button
+                    id="repeatButton"
+                    class="back-button"
+                    type="button"
+                    aria-label="Volver a la pantalla de carga"
+                >
+
+                    ←
+
+                </button>
+
+
+                <div class="level-title">
+
+                    <small>
+
+                        AVENTURA PERUANA
+
+                    </small>
+
+                    <strong>
+
+                        SELECCIONA UN NIVEL
+
+                    </strong>
+
+                </div>
+
+
+                <div class="level-options">
+
+                    <div class="soles-counter">
+
+                        <span class="soles-icon">
+
+                            S/
+
+                        </span>
+
+
+                        <span>
+
+                            <strong id="totalSoles">
+
+                                0
+
+                            </strong>
+
+                            <small>
+
+                                SOLES PE
+
+                            </small>
+
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        id="musicButton"
+                        class="music-button"
+                        type="button"
+                        aria-label="Activar o silenciar música"
+                    >
+
+                        ♪
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =====================================
+                 BOTONES DE LOS CINCO NIVELES
+            ====================================== -->
+
+            <div class="level-buttons">
+
+
+                <!-- NIVEL 1: DESBLOQUEADO -->
+
+                <button
+                    class="level-button level-1 unlocked"
+                    type="button"
+                    data-level="1"
+                    aria-label="Nivel 1: Zamora"
+                >
+
+                    <span class="level-number">
+
+                        1
+
+                    </span>
+
+
+                    <span class="level-information">
+
+                        <small>
+
+                            NIVEL 1
+
+                        </small>
+
+                        <strong>
+
+                            Zamora
+
+                        </strong>
+
+                        <em>
+
+                            50 Soles PE
+
+                        </em>
+
+                    </span>
+
+
+                    <span class="level-status">
+
+                        JUGAR
+
+                    </span>
+
+                </button>
+
+
+
+                <!-- NIVEL 2: BLOQUEADO -->
+
+                <button
+                    class="level-button level-2 locked"
+                    type="button"
+                    data-level="2"
+                    aria-label="Nivel 2: Zumbi bloqueado"
+                    disabled
+                >
+
+                    <span class="level-number">
+
+                        2
+
+                    </span>
+
+
+                    <span class="level-information">
+
+                        <small>
+
+                            NIVEL 2
+
+                        </small>
+
+                        <strong>
+
+                            Zumbi
+
+                        </strong>
+
+                        <em>
+
+                            100 Soles PE
+
+                        </em>
+
+                    </span>
+
+
+                    <span class="level-status">
+
+                        🔒
+
+                    </span>
+
+                </button>
+
+
+
+                <!-- NIVEL 3: BLOQUEADO -->
+
+                <button
+                    class="level-button level-3 locked"
+                    type="button"
+                    data-level="3"
+                    aria-label="Nivel 3: paseo por el dorado bloqueado"
+                    disabled
+                >
+
+                    <span class="level-number">
+
+                        3
+
+                    </span>
+
+
+                    <span class="level-information">
+
+                        <small>
+
+                            NIVEL 3
+
+                        </small>
+
+                        <strong>
+
+                            paseo por el dorado
+
+                        </strong>
+
+                        <em>
+
+                            150 Soles PE
+
+                        </em>
+
+                    </span>
+
+
+                    <span class="level-status">
+
+                        🔒
+
+                    </span>
+
+                </button>
+
+
+
+                <!-- NIVEL 4: BLOQUEADO -->
+
+                <button
+                    class="level-button level-4 locked"
+                    type="button"
+                    data-level="4"
+                    aria-label="Nivel 4: mi natal PERU bloqueado"
+                    disabled
+                >
+
+                    <span class="level-number">
+
+                        4
+
+                    </span>
+
+
+                    <span class="level-information">
+
+                        <small>
+
+                            NIVEL 4
+
+                        </small>
+
+                        <strong>
+
+                            mi natal PERU
+
+                        </strong>
+
+                        <em>
+
+                            200 Soles PE
+
+                        </em>
+
+                    </span>
+
+
+                    <span class="level-status">
+
+                        🔒
+
+                    </span>
+
+                </button>
+
+
+
+                <!-- NIVEL 5: BLOQUEADO -->
+
+                <button
+                    class="level-button level-5 locked final-level"
+                    type="button"
+                    data-level="5"
+                    aria-label="Nivel 5: De regreso a mi natal PERU bloqueado"
+                    disabled
+                >
+
+                    <span class="level-number">
+
+                        5
+
+                    </span>
+
+
+                    <span class="level-information">
+
+                        <small>
+
+                            NIVEL FINAL
+
+                        </small>
+
+                        <strong>
+
+                            De regreso a mi natal PERU
+
+                        </strong>
+
+                        <em>
+
+                            250 Soles PE
+
+                        </em>
+
+                    </span>
+
+
+                    <span class="level-status">
+
+                        🔒
+
+                    </span>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- Mensajes temporales -->
+
+            <div
+                id="levelMessage"
+                class="level-message"
+            >
+
+                Nivel seleccionado
+
+            </div>
+
+        </section>
+<!-- ==================================================
+     PANTALLA DEL JUEGO - NIVEL 1: ZAMORA
+================================================== -->
+<section id="gameScreen" class="screen game-screen">
+
+    <!-- Canvas donde se dibujará todo el nivel -->
+    <canvas
+        id="gameCanvas"
+        width="1280"
+        height="720"
+        aria-label="Nivel 1: Zamora"
+    ></canvas>
+
+    <!-- HUD SUPERIOR -->
+    <div class="game-hud">
+
+        <div class="hud-level">
+            <span id="hudLevelNumber">NIVEL 1</span>
+            <strong id="hudLevelName">Zamora</strong>
+        </div>
+
+        <div class="hud-hearts" id="hudHearts">
+            <span>♥</span>
+            <span>♥</span>
+            <span>♥</span>
+        </div>
+
+        <div class="hud-information">
+
+            <div class="hud-item">
+                <small>SOLES PE</small>
+                <strong>S/ <span id="hudSoles">0</span></strong>
+            </div>
+
+            <div class="hud-item">
+                <small>MONEDAS</small>
+                <strong>● <span id="hudCoins">0</span></strong>
+            </div>
+
+            <div class="hud-item">
+                <small>TIEMPO</small>
+                <strong id="hudTimer">00:00</strong>
+            </div>
+
+        </div>
+
+        <div class="hud-buttons">
+            <button
+                id="gameMusicButton"
+                class="hud-button"
+                type="button"
+                aria-label="Activar o silenciar música"
+            >
+                ♪
+            </button>
+
+            <button
+                id="pauseButton"
+                class="hud-button"
+                type="button"
+                aria-label="Pausar juego"
+            >
+                Ⅱ
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MENSAJES DEL NIVEL -->
+    <div id="gameMessage" class="game-message">
+        Usa A y D o las flechas para caminar
+    </div>
+
+    <!-- CONTROLES PARA CELULAR -->
+    <div class="mobile-controls">
+
+        <div class="movement-controls">
+            <button
+                class="mobile-button"
+                type="button"
+                data-control="left"
+                aria-label="Caminar hacia la izquierda"
+            >
+                ◀
+            </button>
+
+            <button
+                class="mobile-button"
+                type="button"
+                data-control="right"
+                aria-label="Caminar hacia la derecha"
+            >
+                ▶
+            </button>
+
+            <button
+                class="mobile-button crouch-control"
+                type="button"
+                data-control="down"
+                aria-label="Agacharse"
+            >
+                ▼
+            </button>
+        </div>
+
+        <div class="action-controls">
+            <button
+                class="mobile-button run-control"
+                type="button"
+                data-control="run"
+            >
+                CORRER
+            </button>
+
+            <button
+                class="mobile-button jump-control"
+                type="button"
+                data-control="jump"
+            >
+                ↑
+                <small>SALTAR</small>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- PANTALLA DE PAUSA -->
+    <div id="pausePanel" class="game-panel">
+        <div class="game-panel-content">
+            <h2>JUEGO PAUSADO</h2>
+            <p>Nivel 1: Zamora</p>
+
+            <button id="continueGameButton" type="button">
+                CONTINUAR
+            </button>
+
+            <button id="restartLevelButton" type="button">
+                REINICIAR NIVEL
+            </button>
+
+            <button id="exitLevelButton" type="button">
+                VOLVER AL MAPA
+            </button>
+        </div>
+    </div>
+
+</section>
+
+
+        <!-- =========================================
+             CORTINAS DE TRANSICIÓN
+        ========================================== -->
+
+        <div
+            class="curtain curtain-left"
+        ></div>
+
+
+        <div
+            class="curtain curtain-right"
+        ></div>
+
+
+
+        <!-- =========================================
+             MÚSICA DE FONDO
+        ========================================== -->
+
+        <audio
+            id="backgroundMusic"
+            src="assets/audio/musica-fondo.mp3"
+            preload="auto"
+            loop
+        ></audio>
+
+
+    </main>
+
+
+    <script src="js/loading.js"></script>
+    <script src="js/game.js"></script>
+
+</body>
+
+</html>
