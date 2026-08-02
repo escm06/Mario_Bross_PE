@@ -2616,8 +2616,12 @@
         );
 
         if (isPhoneLandscape) {
-            viewHeight = 560;
-            verticalOffset = 160;
+            /*
+             * Mayor acercamiento y terreno
+             * ligeramente más arriba.
+             */
+            viewHeight = 520;
+            verticalOffset = 220;
         } else {
             viewHeight = VIEW_HEIGHT;
             verticalOffset = 0;
