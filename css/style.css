@@ -2724,3 +2724,71 @@ body,
         left: 50% !important;
     }
 }
+/* =====================================================
+   PANEL DE RESULTADOS EN TELÉFONOS HORIZONTALES
+===================================================== */
+
+@media
+    (orientation: landscape)
+    and (max-height: 520px) {
+
+    .game-panel {
+        padding:
+            max(7px, env(safe-area-inset-top))
+            max(12px, env(safe-area-inset-right))
+            max(7px, env(safe-area-inset-bottom))
+            max(12px, env(safe-area-inset-left));
+
+        overflow-y: auto;
+    }
+
+    .game-panel-content {
+        width: min(88%, 650px);
+        max-height: calc(100dvh - 14px);
+
+        padding: 12px 16px 14px;
+
+        border-width: 3px;
+        border-radius: 18px;
+
+        overflow-y: auto;
+
+        box-shadow:
+            0 5px 0 #083b7c,
+            0 10px 25px rgba(0, 0, 0, 0.45);
+    }
+
+    .game-panel-content h2 {
+        margin: 0 0 3px;
+
+        font-size: clamp(22px, 7vh, 32px);
+        line-height: 1;
+    }
+
+    .game-panel-content p {
+        margin: 4px 0;
+
+        font-size: clamp(11px, 3.5vh, 15px);
+        line-height: 1.15;
+    }
+
+    .game-panel-content button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 31%;
+        min-height: 39px;
+
+        margin: 9px 1% 0;
+        padding: 5px 8px;
+
+        font-size: 10px;
+        line-height: 1.1;
+
+        border-width: 2px;
+        border-radius: 11px;
+
+        box-shadow: 0 3px 0 #b86b13;
+    }
+}
