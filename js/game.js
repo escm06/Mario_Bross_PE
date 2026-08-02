@@ -15,6 +15,39 @@
     const levelScreen = document.getElementById("nextScreen");
     const pausePanel = document.getElementById("pausePanel");
 
+/* ELEMENTOS DEL SELECTOR DE PERSONAJES */
+
+    const characterSelectButton =
+    document.getElementById("characterSelectButton");
+
+    const characterSelector =
+    document.getElementById("characterSelector");
+
+    const closeCharacterSelector =
+    document.getElementById("closeCharacterSelector");
+
+    const previousCharacterButton =
+    document.getElementById("previousCharacterButton");
+
+    const nextCharacterButton =
+    document.getElementById("nextCharacterButton");
+
+    const characterCarouselTrack =
+    document.getElementById("characterCarouselTrack");
+
+    const characterSlides =
+    Array.from(document.querySelectorAll(".character-slide"));
+
+    const characterDots =
+    Array.from(document.querySelectorAll(".character-dot"));
+
+    const chooseCharacterButtons =
+    Array.from(document.querySelectorAll(".choose-character-button"));
+    const characterAudioButtons =
+    Array.from(document.querySelectorAll(".character-audio-button"));
+    const selectedCharacterMessage =
+    document.getElementById("selectedCharacterMessage");
+
     if (!canvas || !gameScreen) {
         console.warn("No se encontró el Canvas del juego.");
         return;
@@ -73,6 +106,40 @@
     let playerImageLoaded = false;
 
     playerImage.src = "assets/sprites/personaje.png";
+
+/* =====================================================
+   SEGUNDO PERSONAJE: JACKSON Y SU LLAMA
+===================================================== */
+
+const llamaImage = new Image();
+let llamaImageLoaded = false;
+
+llamaImage.onload = function () {
+    llamaImageLoaded = true;
+};
+
+llamaImage.onerror = function () {
+    console.warn("No se pudo cargar personaje-llama.png");
+};
+
+llamaImage.src = "assets/sprites/personaje-llama.png";
+
+/* Personaje seleccionado y guardado */
+const CHARACTER_STORAGE_KEY = "personajeSeleccionado";
+
+let selectedCharacter =
+    localStorage.getItem(CHARACTER_STORAGE_KEY) || "jackson";
+
+if (
+    selectedCharacter !== "jackson" &&
+    selectedCharacter !== "llama"
+) {
+    selectedCharacter = "jackson";
+}
+
+/* Diapositiva inicial del carrusel */
+let currentCharacterIndex =
+    selectedCharacter === "llama" ? 1 : 0;
 
     playerImage.addEventListener("load", () => {
         playerImageLoaded = true;
@@ -1863,25 +1930,37 @@
         ctx.rotate(rotation);
         ctx.scale(player.direction, scaleY);
 
-        if (playerImageLoaded) {
-            const drawWidth = 76;
-            const drawHeight = 95;
+        /* Personaje que fue elegido en el menú */
+const usingLlama = selectedCharacter === "llama";
 
-            ctx.drawImage(
-                playerImage,
-                -drawWidth / 2,
-                -drawHeight,
-                drawWidth,
-                drawHeight
-            );
-        } else {
-            drawFallbackPlayer();
-        }
+const activePlayerImage =
+    usingLlama ? llamaImage : playerImage;
+
+const activePlayerImageLoaded =
+    usingLlama ? llamaImageLoaded : playerImageLoaded;
+
+if (activePlayerImageLoaded) {
+    /* La llama es un poco más grande dentro del nivel */
+    const drawWidth = usingLlama ? 96 : 76;
+    const drawHeight = usingLlama ? 118 : 95;
+
+    ctx.drawImage(
+        activePlayerImage,
+        -drawWidth / 2,
+        -drawHeight,
+        drawWidth,
+        drawHeight
+    );
+} else {
+    drawFallbackPlayer();
+}
 
         ctx.restore();
 
         /* Nombre discreto encima del personaje */
-        const playerName = "Jackson QuissssPE";
+        const playerName = usingLlama
+    ? "Jackson y su llama"
+    : "Jackson QuissssPE";
         const nameX = player.x + player.width / 2;
         const nameY = player.y - 12 - bounce;
 
@@ -2615,7 +2694,7 @@
             isPhoneLandscape ? 3 : 2
         );
 
-        if (isPhoneLandscape) {
+                if (isPhoneLandscape) {
             /*
              * Mayor acercamiento y terreno
              * ligeramente más arriba.
@@ -2689,7 +2768,241 @@
 
         requestAnimationFrame(gameLoop);
     }
+/* =====================================================
+   CARRUSEL Y SELECCIÓN DE PERSONAJES
+===================================================== */
 
+function updateCharacterCarousel(index) {
+    if (
+        !characterCarouselTrack ||
+        characterSlides.length === 0
+    ) {
+        return;
+    }
+
+    const totalCharacters = characterSlides.length;
+
+    currentCharacterIndex =
+        (index + totalCharacters) % totalCharacters;
+
+    characterCarouselTrack.style.transform =
+        `translateX(-${currentCharacterIndex * 100}%)`;
+
+    characterSlides.forEach(function (slide, slideIndex) {
+        slide.classList.toggle(
+            "active",
+            slideIndex === currentCharacterIndex
+        );
+    });
+
+    characterDots.forEach(function (dot, dotIndex) {
+        dot.classList.toggle(
+            "active",
+            dotIndex === currentCharacterIndex
+        );
+    });
+
+    chooseCharacterButtons.forEach(function (button) {
+        const isSelected =
+            button.dataset.selectCharacter === selectedCharacter;
+
+        button.classList.toggle("selected", isSelected);
+        button.textContent = isSelected ? "ELEGIDO" : "ELEGIR";
+    });
+}
+
+function openCharacterSelector() {
+    if (!characterSelector) {
+        return;
+    }
+
+    currentCharacterIndex =
+        selectedCharacter === "llama" ? 1 : 0;
+
+    updateCharacterCarousel(currentCharacterIndex);
+
+    characterSelector.classList.add("visible");
+    characterSelector.setAttribute("aria-hidden", "false");
+
+    if (backgroundMusic && !backgroundMusic.muted) {
+        backgroundMusic.volume = 0.12;
+    }
+}
+
+function closeCharacterSelectorMenu() {
+    if (!characterSelector) {
+        return;
+    }
+
+    characterSelector.classList.remove("visible");
+    characterSelector.setAttribute("aria-hidden", "true");
+
+    if (backgroundMusic) {
+        backgroundMusic.volume = 0.25;
+    }
+}
+
+function chooseCharacter(characterId) {
+    selectedCharacter = characterId;
+
+    localStorage.setItem(
+        CHARACTER_STORAGE_KEY,
+        selectedCharacter
+    );
+
+    if (selectedCharacterMessage) {
+        selectedCharacterMessage.textContent =
+            selectedCharacter === "llama"
+                ? "Jackson y su llama seleccionado"
+                : "Jackson QuissssPE seleccionado";
+    }
+
+    updateCharacterCarousel(currentCharacterIndex);
+
+    window.setTimeout(function () {
+        closeCharacterSelectorMenu();
+    }, 650);
+}
+
+/* Abrir el menú */
+if (characterSelectButton) {
+    characterSelectButton.addEventListener("click", function () {
+        openCharacterSelector();
+    });
+}
+
+/* Cerrar con la X */
+if (closeCharacterSelector) {
+    closeCharacterSelector.addEventListener("click", function () {
+        closeCharacterSelectorMenu();
+    });
+}
+
+/* Flecha izquierda */
+if (previousCharacterButton) {
+    previousCharacterButton.addEventListener("click", function () {
+        updateCharacterCarousel(currentCharacterIndex - 1);
+    });
+}
+
+/* Flecha derecha */
+if (nextCharacterButton) {
+    nextCharacterButton.addEventListener("click", function () {
+        updateCharacterCarousel(currentCharacterIndex + 1);
+    });
+}
+
+/* Botones ELEGIR */
+chooseCharacterButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        chooseCharacter(button.dataset.selectCharacter);
+    });
+});
+
+/* Puntos inferiores */
+characterDots.forEach(function (dot) {
+    dot.addEventListener("click", function () {
+        updateCharacterCarousel(
+            Number(dot.dataset.characterIndex)
+        );
+    });
+});
+/* =====================================================
+   AUDIOS DE LOS PERSONAJES
+===================================================== */
+
+let activeCharacterAudio = null;
+let activeCharacterAudioButton = null;
+
+function restoreCharacterMusicVolume() {
+    if (!backgroundMusic) {
+        return;
+    }
+
+    const selectorIsOpen =
+        characterSelector &&
+        characterSelector.classList.contains("visible");
+
+    backgroundMusic.volume = selectorIsOpen ? 0.12 : 0.25;
+}
+
+function stopCharacterAudio() {
+    if (activeCharacterAudio) {
+        activeCharacterAudio.pause();
+
+        try {
+            activeCharacterAudio.currentTime = 0;
+        } catch (error) {
+            console.warn("No se pudo reiniciar el audio.");
+        }
+    }
+
+    if (activeCharacterAudioButton) {
+        activeCharacterAudioButton.classList.remove("is-playing");
+    }
+
+    activeCharacterAudio = null;
+    activeCharacterAudioButton = null;
+
+    restoreCharacterMusicVolume();
+}
+
+characterAudioButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+        const sameAudioIsPlaying =
+            activeCharacterAudioButton === button &&
+            activeCharacterAudio &&
+            !activeCharacterAudio.paused;
+
+        stopCharacterAudio();
+
+        /* Si se pulsa nuevamente, se detiene */
+        if (sameAudioIsPlaying) {
+            return;
+        }
+
+        const audioPath = button.dataset.characterAudio;
+
+        if (!audioPath) {
+            return;
+        }
+
+        activeCharacterAudio = new Audio(audioPath);
+        activeCharacterAudioButton = button;
+
+        activeCharacterAudio.volume = 0.9;
+        button.classList.add("is-playing");
+
+        /* Bajar la música mientras habla el personaje */
+        if (backgroundMusic && !backgroundMusic.muted) {
+            backgroundMusic.volume = 0.04;
+        }
+
+        activeCharacterAudio.addEventListener("ended", function () {
+            stopCharacterAudio();
+        });
+
+        activeCharacterAudio.addEventListener("error", function () {
+            console.warn(
+                "No se pudo reproducir el audio:",
+                audioPath
+            );
+
+            stopCharacterAudio();
+        });
+
+        activeCharacterAudio.play().catch(function (error) {
+            console.warn(
+                "El navegador bloqueó el audio:",
+                error
+            );
+
+            stopCharacterAudio();
+        });
+    });
+});
+/* Mostrar inicialmente el personaje guardado */
+updateCharacterCarousel(currentCharacterIndex);
     resizeCanvas();
     requestAnimationFrame(gameLoop);
 })();

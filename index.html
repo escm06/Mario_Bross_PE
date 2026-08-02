@@ -556,7 +556,176 @@
                 Nivel seleccionado
 
             </div>
+<!-- BOTÓN PARA ELEGIR PERSONAJE -->
+<button
+    id="characterSelectButton"
+    class="character-select-button"
+    type="button"
+>
+    <span class="character-button-icon">👤</span>
+    <span>ELEGIR PERSONAJE</span>
+</button>
 
+<!-- MENÚ DESLIZABLE DE PERSONAJES -->
+<div
+    id="characterSelector"
+    class="character-selector"
+    aria-hidden="true"
+>
+    <div class="character-carousel-panel">
+
+        <!-- Cerrar el selector -->
+        <button
+            id="closeCharacterSelector"
+            class="close-character-selector"
+            type="button"
+            aria-label="Cerrar selección de personajes"
+        >
+            ×
+        </button>
+
+        <!-- Encabezado -->
+        <div class="character-carousel-header">
+            <small>AVENTURA PERUANA</small>
+            <h2>ELIGE TU PERSONAJE</h2>
+        </div>
+
+        <!-- Carrusel -->
+        <div class="character-carousel">
+
+            <!-- Flecha izquierda -->
+            <button
+                id="previousCharacterButton"
+                class="character-arrow character-arrow-left"
+                type="button"
+                aria-label="Personaje anterior"
+            >
+                ‹
+            </button>
+
+            <!-- Ventana visible del carrusel -->
+            <div class="character-carousel-viewport">
+
+                <div
+                    id="characterCarouselTrack"
+                    class="character-carousel-track"
+                >
+
+                    <!-- JACKSON -->
+                    <article
+                        class="character-slide active"
+                        data-character="jackson"
+                    >
+                        <h3 class="character-display-name">
+                            Jackson QuissssPE
+                        </h3>
+
+                        <div class="character-display-image">
+                            <img
+                                src="assets/sprites/personaje.png"
+                                alt="Jackson QuissssPE"
+                            >
+                        </div>
+
+                        <p class="character-description">
+                            Ágil, rápido y preparado para la aventura
+                        </p>
+<button
+    class="character-audio-button"
+    type="button"
+    data-character-audio="assets/audio/voz-jackson.mp3"
+    aria-label="Escuchar la voz de Jackson QuissssPE"
+>
+    <span class="character-play-icon">▶</span>
+    <span>ESCUCHAR</span>
+</button>
+                        <button
+                            class="choose-character-button"
+                            type="button"
+                            data-select-character="jackson"
+                        >
+                            ELEGIR
+                        </button>
+                    </article>
+
+                    <!-- JACKSON CON SU LLAMA -->
+                    <article
+                        class="character-slide"
+                        data-character="llama"
+                    >
+                        <h3 class="character-display-name">
+                            Jackson y su llama
+                        </h3>
+
+                        <div class="character-display-image llama-image">
+                            <img
+                                src="assets/sprites/personaje-llama.png"
+                                alt="Jackson y su llama"
+                            >
+                        </div>
+
+                        <p class="character-description">
+                            Una dupla resistente y llena de estilo
+                        </p>
+<button
+    class="character-audio-button"
+    type="button"
+    data-character-audio="assets/audio/voz-jackson-llama.mp3"
+    aria-label="Escuchar la voz de Jackson y su llama"
+>
+    <span class="character-play-icon">▶</span>
+    <span>ESCUCHAR</span>
+</button>
+                        <button
+                            class="choose-character-button"
+                            type="button"
+                            data-select-character="llama"
+                        >
+                            ELEGIR
+                        </button>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- Flecha derecha -->
+            <button
+                id="nextCharacterButton"
+                class="character-arrow character-arrow-right"
+                type="button"
+                aria-label="Siguiente personaje"
+            >
+                ›
+            </button>
+
+        </div>
+
+        <!-- Indicadores inferiores -->
+        <div class="character-carousel-dots">
+            <button
+                class="character-dot active"
+                type="button"
+                data-character-index="0"
+                aria-label="Mostrar a Jackson"
+            ></button>
+
+            <button
+                class="character-dot"
+                type="button"
+                data-character-index="1"
+                aria-label="Mostrar a Jackson con su llama"
+            ></button>
+        </div>
+
+        <p
+            id="selectedCharacterMessage"
+            class="selected-character-message"
+        >
+            Personaje actual: Jackson QuissssPE
+        </p>
+
+    </div>
+</div>
         </section>
 <!-- ==================================================
      PANTALLA DEL JUEGO - NIVEL 1: ZAMORA

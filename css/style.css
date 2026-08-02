@@ -3107,3 +3107,1374 @@ body,
             0 5px 12px rgba(0, 0, 0, 0.25) !important;
     }
 }
+/* =====================================================
+   BOTÓN ELEGIR PERSONAJE
+===================================================== */
+
+.character-select-button {
+    position: absolute;
+    top: 61%;
+    left: 50%;
+    z-index: 35;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-width: 210px;
+    min-height: 52px;
+    padding: 10px 20px;
+
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+
+    border: 2px solid rgba(255, 255, 255, 0.82);
+    border-radius: 17px;
+    outline: none;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(21, 166, 126, 0.95),
+            rgba(8, 91, 81, 0.95)
+        );
+
+    box-shadow:
+        0 5px 0 #054e48,
+        0 10px 24px rgba(0, 0, 0, 0.38);
+
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.character-select-button:hover {
+    filter: brightness(1.15);
+
+    transform:
+        translate(-50%, -54%)
+        scale(1.04);
+}
+
+.character-select-button:active {
+    transform:
+        translate(-50%, -45%)
+        scale(0.97);
+
+    box-shadow:
+        0 2px 0 #054e48,
+        0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.character-button-icon {
+    font-size: 20px;
+}
+
+/* =====================================================
+   FONDO DEL MENÚ DE PERSONAJES
+===================================================== */
+
+.character-selector {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+
+    display: grid;
+    place-items: center;
+
+    padding:
+        max(12px, env(safe-area-inset-top))
+        max(18px, env(safe-area-inset-right))
+        max(12px, env(safe-area-inset-bottom))
+        max(18px, env(safe-area-inset-left));
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    background:
+        rgba(2, 17, 31, 0.78);
+
+    backdrop-filter:
+        blur(13px)
+        saturate(130%);
+
+    -webkit-backdrop-filter:
+        blur(13px)
+        saturate(130%);
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.character-selector.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* =====================================================
+   PANEL CENTRAL
+===================================================== */
+
+.character-selector-panel {
+    position: relative;
+
+    width: min(92vw, 800px);
+    max-height: calc(100dvh - 24px);
+    padding: 20px;
+
+    overflow-y: auto;
+
+    border: 3px solid rgba(255, 255, 255, 0.72);
+    border-radius: 27px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 69, 91, 0.97),
+            rgba(5, 28, 48, 0.98)
+        );
+
+    box-shadow:
+        0 8px 0 #041a2d,
+        0 22px 55px rgba(0, 0, 0, 0.58);
+
+    transform:
+        translateY(30px)
+        scale(0.88);
+
+    transition:
+        transform 0.35s
+        cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.character-selector.visible
+.character-selector-panel {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+/* Botón cerrar */
+
+.close-character-selector {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 5;
+
+    display: grid;
+    place-items: center;
+
+    width: 38px;
+    height: 38px;
+    padding: 0;
+
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    line-height: 1;
+
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+
+    background:
+        rgba(239, 58, 70, 0.85);
+
+    cursor: pointer;
+}
+
+/* Encabezado */
+
+.character-selector-header {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.character-selector-header small {
+    color: #ffdb4d;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.character-selector-header h2 {
+    margin: 3px 45px 3px;
+
+    color: #ffffff;
+    font-size: clamp(24px, 4vw, 38px);
+    line-height: 1;
+
+    text-shadow:
+        0 3px 0 #05223b,
+        0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.character-selector-header p {
+    margin: 6px 0 0;
+
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+}
+
+/* =====================================================
+   TARJETAS DE PERSONAJES
+===================================================== */
+
+.character-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.character-card {
+    position: relative;
+
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 8px;
+
+    min-height: 235px;
+    padding: 12px;
+
+    color: white;
+    font-family: inherit;
+    text-align: center;
+
+    border: 3px solid rgba(255, 255, 255, 0.22);
+    border-radius: 21px;
+    outline: none;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.04)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 8px 18px rgba(0, 0, 0, 0.24);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.character-card:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(255, 219, 77, 0.72);
+}
+
+.character-card.selected {
+    border-color: #ffdb4d;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 201, 63, 0.28),
+            rgba(255, 255, 255, 0.08)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 0 22px rgba(255, 210, 57, 0.38),
+        0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagen */
+
+.character-image-container {
+    display: grid;
+    place-items: center;
+
+    min-height: 150px;
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(68, 205, 208, 0.28),
+            rgba(5, 30, 50, 0.2) 68%
+        );
+}
+
+.character-image-container img {
+    display: block;
+
+    width: auto;
+    max-width: 95%;
+    height: 150px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 8px 8px
+            rgba(0, 0, 0, 0.38)
+        );
+}
+
+/* Información */
+
+.character-card-information h3 {
+    margin: 0;
+
+    color: #ffffff;
+    font-size: 17px;
+}
+
+.character-card-information p {
+    margin: 3px 0 0;
+
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+}
+
+/* Indicador elegido */
+
+.character-selected-badge {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    z-index: 3;
+
+    display: none;
+
+    padding: 5px 8px;
+
+    color: #073d32;
+    font-size: 8px;
+    font-weight: 900;
+
+    border-radius: 10px;
+
+    background: #ffdc4c;
+
+    box-shadow:
+        0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.character-card.selected
+.character-selected-badge {
+    display: block;
+}
+
+/* Mensaje inferior */
+
+.selected-character-message {
+    margin: 13px 0 0;
+
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* =====================================================
+   ADAPTACIÓN HORIZONTAL PARA TELÉFONOS
+===================================================== */
+
+@media
+    (orientation: landscape)
+    and (max-height: 520px) {
+
+    .character-select-button {
+        top: 61%;
+
+        min-width: 180px;
+        min-height: 43px;
+        padding: 7px 14px;
+
+        font-size: 10px;
+        border-radius: 14px;
+    }
+
+    .character-selector-panel {
+        width: min(86vw, 720px);
+        padding: 11px 14px 10px;
+
+        border-width: 2px;
+        border-radius: 20px;
+    }
+
+    .character-selector-header {
+        margin-bottom: 8px;
+    }
+
+    .character-selector-header h2 {
+        margin-top: 1px;
+        font-size: 24px;
+    }
+
+    .character-selector-header p {
+        display: none;
+    }
+
+    .character-grid {
+        gap: 11px;
+    }
+
+    .character-card {
+        grid-template-columns: 44% 56%;
+        grid-template-rows: 1fr;
+        align-items: center;
+
+        min-height: 165px;
+        padding: 8px;
+        gap: 8px;
+
+        border-width: 2px;
+        border-radius: 16px;
+    }
+
+    .character-image-container {
+        min-height: 142px;
+    }
+
+    .character-image-container img {
+        height: 136px;
+    }
+
+    .character-card-information {
+        padding-right: 6px;
+    }
+
+    .character-card-information h3 {
+        font-size: 14px;
+    }
+
+    .character-card-information p {
+        font-size: 9px;
+    }
+
+    .selected-character-message {
+        margin-top: 7px;
+        font-size: 10px;
+    }
+
+    .close-character-selector {
+        top: 8px;
+        right: 10px;
+
+        width: 31px;
+        height: 31px;
+
+        font-size: 21px;
+    }
+}
+/* =====================================================
+   SELECTOR DE PERSONAJES TIPO CARRUSEL
+===================================================== */
+
+.character-selector {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+
+    display: grid;
+    place-items: center;
+
+    padding:
+        max(10px, env(safe-area-inset-top))
+        max(18px, env(safe-area-inset-right))
+        max(10px, env(safe-area-inset-bottom))
+        max(18px, env(safe-area-inset-left));
+
+    overflow: hidden;
+    isolation: isolate;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    background: none !important;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+.character-selector.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Fondo desenfocado */
+
+.character-selector::before {
+    content: "";
+
+    position: absolute;
+    inset: -12px;
+    z-index: -2;
+
+    background:
+        url("../assets/images/seleccion-personaje.png")
+        center center / cover
+        no-repeat;
+
+    filter:
+        blur(3px)
+        saturate(115%);
+
+    transform: scale(1.035);
+}
+
+/* Oscurecimiento suave del fondo */
+
+.character-selector::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(2, 15, 27, 0.68),
+            rgba(2, 21, 34, 0.22) 50%,
+            rgba(2, 15, 27, 0.68)
+        );
+}
+
+/* =====================================================
+   PANEL PRINCIPAL
+===================================================== */
+
+.character-carousel-panel {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(92vw, 920px);
+    height: min(90dvh, 600px);
+    max-height: calc(100dvh - 20px);
+
+    padding: 17px 22px 14px;
+
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5, 40, 58, 0.54),
+            rgba(3, 20, 35, 0.38)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 15px 45px rgba(0, 0, 0, 0.45);
+
+    backdrop-filter:
+        blur(8px)
+        saturate(130%);
+
+    -webkit-backdrop-filter:
+        blur(8px)
+        saturate(130%);
+
+    transform:
+        translateY(24px)
+        scale(0.9);
+
+    transition:
+        transform 0.4s
+        cubic-bezier(0.2, 1.25, 0.35, 1);
+}
+
+.character-selector.visible
+.character-carousel-panel {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+/* =====================================================
+   ENCABEZADO
+===================================================== */
+
+.character-carousel-header {
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.character-carousel-header small {
+    color: #ffdf58;
+
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 2.4px;
+
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.65);
+}
+
+.character-carousel-header h2 {
+    margin: 3px 45px 0;
+
+    color: #ffffff;
+
+    font-family:
+        Impact,
+        Haettenschweiler,
+        "Arial Black",
+        sans-serif;
+
+    font-size: clamp(23px, 4vw, 36px);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    line-height: 1;
+
+    text-shadow:
+        0 3px 0 #075070,
+        0 6px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Cerrar */
+
+.close-character-selector {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    z-index: 20;
+
+    display: grid;
+    place-items: center;
+
+    width: 39px;
+    height: 39px;
+    padding: 0;
+
+    color: #ffffff;
+
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    line-height: 1;
+
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+
+    background:
+        rgba(209, 38, 55, 0.78);
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    cursor: pointer;
+}
+
+/* =====================================================
+   CARRUSEL
+===================================================== */
+
+.character-carousel {
+    display: grid;
+    grid-template-columns:
+        64px
+        minmax(0, 1fr)
+        64px;
+
+    align-items: center;
+    gap: 11px;
+
+    flex: 1;
+    min-height: 0;
+}
+
+.character-carousel-viewport {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+.character-carousel-track {
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    transform: translateX(0);
+
+    transition:
+        transform 0.55s
+        cubic-bezier(0.22, 0.9, 0.35, 1);
+
+    will-change: transform;
+}
+
+/* Cada personaje ocupa toda la ventana */
+
+.character-slide {
+    display: grid;
+    grid-template-rows:
+        auto
+        minmax(0, 1fr)
+        auto
+        auto;
+
+    place-items: center;
+    gap: 7px;
+
+    flex: 0 0 100%;
+
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+
+    padding: 5px 12px;
+
+    opacity: 0.45;
+
+    transform: scale(0.9);
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+}
+
+.character-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* =====================================================
+   NOMBRE DORADO
+===================================================== */
+
+.character-display-name {
+    margin: 0;
+
+    color: #ffd84f;
+
+    font-family:
+        Impact,
+        Haettenschweiler,
+        "Arial Black",
+        sans-serif;
+
+    font-size: clamp(27px, 4.5vw, 48px);
+    font-weight: 900;
+    letter-spacing: 1.7px;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+
+    -webkit-text-stroke:
+        1.5px #7d340e;
+
+    paint-order:
+        stroke fill;
+
+    text-shadow:
+        0 3px 0 #a63c13,
+        0 6px 0 #351509,
+        0 9px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* =====================================================
+   IMAGEN CENTRAL
+===================================================== */
+
+.character-display-image {
+    display: grid;
+    place-items: center;
+
+    width: min(100%, 520px);
+    min-height: 0;
+
+    overflow: visible;
+}
+
+.character-display-image img {
+    display: block;
+
+    width: auto;
+    max-width: 96%;
+    height: clamp(180px, 43vh, 350px);
+    max-height: 100%;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 13px 12px
+            rgba(0, 0, 0, 0.48)
+        );
+
+    animation:
+        characterFloating
+        2.4s
+        ease-in-out
+        infinite;
+}
+
+.llama-image img {
+    max-width: 88%;
+}
+
+@keyframes characterFloating {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+/* Descripción */
+
+.character-description {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.86);
+
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* =====================================================
+   BOTÓN ELEGIR
+===================================================== */
+
+.choose-character-button {
+    min-width: 190px;
+    min-height: 46px;
+
+    padding: 8px 25px;
+
+    color: #442206;
+
+    font-family:
+        "Arial Black",
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.3px;
+
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    outline: none;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff17b,
+            #ffc52e
+        );
+
+    box-shadow:
+        0 5px 0 #ad6311,
+        0 10px 20px rgba(0, 0, 0, 0.32);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.16s ease,
+        filter 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.choose-character-button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.choose-character-button:active {
+    transform: translateY(4px);
+
+    box-shadow:
+        0 1px 0 #ad6311,
+        0 4px 8px rgba(0, 0, 0, 0.28);
+}
+
+.choose-character-button.selected {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            180deg,
+            #27c989,
+            #07805e
+        );
+
+    box-shadow:
+        0 5px 0 #045440,
+        0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* =====================================================
+   FLECHAS LATERALES
+===================================================== */
+
+.character-arrow {
+    display: grid;
+    place-items: center;
+
+    width: 58px;
+    height: 82px;
+    padding: 0;
+
+    color: #fff1a4;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size: 58px;
+    line-height: 1;
+
+    border: 2px solid rgba(255, 255, 255, 0.52);
+    border-radius: 21px;
+    outline: none;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 105, 132, 0.72),
+            rgba(3, 35, 55, 0.58)
+        );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 7px 18px rgba(0, 0, 0, 0.32);
+
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease;
+}
+
+.character-arrow:hover {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(33, 151, 174, 0.82),
+            rgba(6, 66, 87, 0.7)
+        );
+
+    transform: scale(1.06);
+}
+
+.character-arrow:active {
+    transform: scale(0.93);
+}
+
+/* =====================================================
+   PUNTOS E INDICADOR
+===================================================== */
+
+.character-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.character-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.38);
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease;
+}
+
+.character-dot.active {
+    width: 27px;
+    border-radius: 8px;
+
+    background: #ffda4e;
+}
+
+.selected-character-message {
+    flex-shrink: 0;
+
+    margin: 5px 0 0;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* =====================================================
+   VERSIÓN HORIZONTAL PARA TELÉFONOS
+===================================================== */
+
+@media
+    (orientation: landscape)
+    and (max-height: 520px) {
+
+    .character-carousel-panel {
+        width: min(90vw, 760px);
+        height: calc(100dvh - 14px);
+
+        padding: 8px 13px 7px;
+
+        border-radius: 20px;
+    }
+
+    .character-carousel-header small {
+        font-size: 7px;
+    }
+
+    .character-carousel-header h2 {
+        margin-top: 1px;
+        font-size: 19px;
+    }
+
+    .character-carousel {
+        grid-template-columns:
+            43px
+            minmax(0, 1fr)
+            43px;
+
+        gap: 6px;
+    }
+
+    .character-slide {
+        gap: 3px;
+        padding: 2px 6px;
+    }
+
+    .character-display-name {
+        font-size: clamp(21px, 6vh, 29px);
+
+        -webkit-text-stroke:
+            1px #7d340e;
+
+        text-shadow:
+            0 2px 0 #a63c13,
+            0 4px 0 #351509,
+            0 6px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .character-display-image img {
+        height: clamp(145px, 43vh, 180px);
+    }
+
+    .llama-image img {
+        max-width: 80%;
+    }
+
+    .character-description {
+        font-size: 9px;
+    }
+
+    .choose-character-button {
+        min-width: 145px;
+        min-height: 37px;
+
+        padding: 5px 17px;
+
+        font-size: 10px;
+
+        border-width: 2px;
+        border-radius: 11px;
+
+        box-shadow:
+            0 3px 0 #ad6311,
+            0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .character-arrow {
+        width: 41px;
+        height: 66px;
+
+        font-size: 43px;
+        border-radius: 15px;
+    }
+
+    .character-carousel-dots {
+        margin-top: 2px;
+    }
+
+    .selected-character-message {
+        margin-top: 2px;
+        font-size: 8px;
+    }
+
+    .close-character-selector {
+        top: 7px;
+        right: 9px;
+
+        width: 30px;
+        height: 30px;
+
+        font-size: 21px;
+    }
+}
+
+/* =====================================================
+   BOTÓN PARA ESCUCHAR LA VOZ DEL PERSONAJE
+===================================================== */
+
+.character-audio-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-width: 145px;
+    min-height: 40px;
+    margin: 5px auto 9px;
+    padding: 7px 17px;
+
+    border: 2px solid rgba(255, 216, 91, 0.85);
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10, 37, 56, 0.92),
+            rgba(4, 17, 30, 0.92)
+        );
+
+    color: #fff4c4;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+
+    box-shadow:
+        0 6px 0 rgba(0, 0, 0, 0.45),
+        0 0 16px rgba(255, 198, 45, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+    cursor: pointer;
+    touch-action: manipulation;
+
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+}
+
+.character-play-icon {
+    display: grid;
+    place-items: center;
+
+    width: 25px;
+    height: 25px;
+
+    padding-left: 2px;
+    border-radius: 50%;
+
+    background: linear-gradient(145deg, #ffd83d, #ee8d16);
+    color: #192432;
+
+    font-size: 12px;
+
+    box-shadow:
+        0 0 10px rgba(255, 208, 48, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.character-audio-button:hover {
+    transform: translateY(-2px) scale(1.03);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 68, 91, 0.96),
+            rgba(6, 26, 43, 0.96)
+        );
+
+    box-shadow:
+        0 8px 0 rgba(0, 0, 0, 0.42),
+        0 0 22px rgba(255, 202, 38, 0.48);
+}
+
+.character-audio-button:active {
+    transform: translateY(3px) scale(0.98);
+    box-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(255, 202, 38, 0.35);
+}
+
+/* Apariencia mientras el audio está reproduciéndose */
+.character-audio-button.is-playing {
+    border-color: #fff0a0;
+    background: linear-gradient(145deg, #d28d13, #8f4d08);
+
+    animation: characterAudioPulse 850ms ease-in-out infinite;
+}
+
+.character-audio-button.is-playing .character-play-icon {
+    background: #fff3b0;
+}
+
+@keyframes characterAudioPulse {
+    0%,
+    100% {
+        box-shadow:
+            0 6px 0 rgba(0, 0, 0, 0.45),
+            0 0 10px rgba(255, 208, 48, 0.35);
+    }
+
+    50% {
+        box-shadow:
+            0 6px 0 rgba(0, 0, 0, 0.45),
+            0 0 26px rgba(255, 208, 48, 0.85);
+    }
+}
+
+/* Botón compacto en teléfonos horizontales */
+@media (orientation: landscape) and (max-height: 520px) {
+    .character-audio-button {
+        min-width: 116px;
+        min-height: 31px;
+        margin: 2px auto 5px;
+        padding: 4px 12px;
+
+        font-size: 9px;
+    }
+
+    .character-play-icon {
+        width: 21px;
+        height: 21px;
+        font-size: 10px;
+    }
+}
+/* =====================================================
+   TAMAÑO ESPECIAL PARA JACKSON Y SU LLAMA
+===================================================== */
+
+.character-slide[data-character="llama"]
+.character-display-image {
+    min-height: 0 !important;
+    height: min(40vh, 330px) !important;
+}
+
+.character-slide[data-character="llama"]
+.character-display-image img {
+    width: auto !important;
+    height: 100% !important;
+    max-width: 90% !important;
+    max-height: 330px !important;
+
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+/* Tamaño para teléfonos en horizontal */
+@media (orientation: landscape) and (max-height: 520px) {
+    .character-slide[data-character="llama"]
+    .character-display-image {
+        height: 185px !important;
+    }
+
+    .character-slide[data-character="llama"]
+    .character-display-image img {
+        max-height: 185px !important;
+        max-width: 82% !important;
+    }
+}
+/* CORRECCIÓN DEFINITIVA DEL TAMAÑO DE LA LLAMA */
+
+.character-slide[data-character="llama"]
+.character-display-image.llama-image {
+    min-height: 0 !important;
+    height: 300px !important;
+
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+}
+
+.character-slide[data-character="llama"]
+.character-display-image.llama-image img {
+    width: auto !important;
+    height: 300px !important;
+
+    max-width: 75% !important;
+    max-height: 300px !important;
+
+    transform-origin: center bottom;
+animation: llamaCharacterFloat 2.4s ease-in-out infinite !important;
+
+    object-fit: contain !important;
+    object-position: center bottom !important;
+}
+
+/* Ajuste para teléfonos horizontales */
+@media (orientation: landscape) and (max-height: 520px) {
+    .character-slide[data-character="llama"]
+    .character-display-image.llama-image {
+        height: 165px !important;
+    }
+
+    .character-slide[data-character="llama"]
+    .character-display-image.llama-image img {
+        width: auto !important;
+        height: 165px !important;
+        max-width: 68% !important;
+        max-height: 165px !important;
+    }
+}
+/* Animación flotante de Jackson y su llama */
+@keyframes llamaCharacterFloat {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-0.5deg);
+    }
+
+    50% {
+        transform: translateY(-9px) rotate(0.5deg);
+    }
+}
