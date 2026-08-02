@@ -2577,3 +2577,78 @@ body,
         transform: rotate(90deg);
     }
 }
+/* =====================================================
+   OCUPAR TODO EL ANCHO EN TELÉFONOS HORIZONTALES
+===================================================== */
+
+@media
+    (orientation: landscape)
+    and (pointer: coarse) {
+
+    html,
+    body,
+    #app {
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: none !important;
+
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+    }
+
+    .screen,
+    .game-screen,
+    .game-screen.active {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: none !important;
+
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: none !important;
+        border-radius: 0 !important;
+    }
+
+    #gameCanvas {
+        position: absolute !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+@supports (height: 100dvh) {
+    @media
+        (orientation: landscape)
+        and (pointer: coarse) {
+
+        html,
+        body,
+        #app,
+        .screen,
+        .game-screen,
+        .game-screen.active,
+        #gameCanvas {
+            height: 100dvh !important;
+            min-height: 100dvh !important;
+        }
+    }
+}

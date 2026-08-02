@@ -1,0 +1,11 @@
+{
+    "name": "Mario PE - Aventura Peruana",
+    "short_name": "Mario PE",
+    "description": "Videojuego de plataformas y aventura peruana",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "fullscreen",
+    "orientation": "landscape",
+    "background_color": "#07111f",
+    "theme_color": "#07111f"
+}

@@ -430,10 +430,53 @@
     ===================================================== */
 
     function startLevel(levelNumber = 1) {
-        if (Number(levelNumber) !== 1) {
+            /* =====================================================
+       PANTALLA COMPLETA EN TELÉFONOS
+    ===================================================== */
+
+    async function enterFullscreenLandscape() {
+        const isTouchDevice =
+            window.matchMedia("(pointer: coarse)").matches;
+
+        if (!isTouchDevice) {
             return;
         }
 
+        const page = document.documentElement;
+
+        try {
+            if (!document.fullscreenElement) {
+                if (page.requestFullscreen) {
+                    await page.requestFullscreen({
+                        navigationUI: "hide"
+                    });
+                } else if (page.webkitRequestFullscreen) {
+                    await page.webkitRequestFullscreen();
+                }
+            }
+        } catch (error) {
+            console.log(
+                "El navegador no permitió la pantalla completa."
+            );
+        }
+
+        try {
+            if (
+                screen.orientation &&
+                typeof screen.orientation.lock === "function"
+            ) {
+                await screen.orientation.lock("landscape");
+            }
+        } catch (error) {
+            console.log(
+                "La orientación deberá cambiarse manualmente."
+            );
+        }
+    }
+        if (Number(levelNumber) !== 1) {
+            return;
+        }
+        enterFullscreenLandscape();
         createLevelOne();
         resizeCanvas();
         resetPlayer();
