@@ -2624,7 +2624,7 @@ body,
     }
 
     #gameCanvas {
-        position: absolute !important;
+        position: fixed !important;
         inset: 0 !important;
 
         width: 100vw !important;
@@ -2650,5 +2650,77 @@ body,
             height: 100dvh !important;
             min-height: 100dvh !important;
         }
+    }
+}
+/* =====================================================
+   POSICIÓN DE LOS NIVELES SOBRE LAS NUBES
+===================================================== */
+
+@media (orientation: landscape) {
+
+    #nextScreen {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        background-image:
+            url("../assets/images/seleccion-niveles.png") !important;
+
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-size: 100% 100% !important;
+
+        overflow: hidden !important;
+    }
+
+    #nextScreen .level-button {
+        position: fixed !important;
+        z-index: 15 !important;
+
+        width: clamp(145px, 12vw, 210px) !important;
+        min-width: 0 !important;
+        max-width: 210px !important;
+
+        margin: 0 !important;
+
+        transform:
+            translate(-50%, -50%) !important;
+    }
+
+    /* Nivel 1: nube inferior izquierda */
+
+    #nextScreen .level-button[data-level="1"] {
+        top: 68% !important;
+        left: -12% !important;
+    }
+
+    /* Nivel 2: nube inferior derecha */
+
+    #nextScreen .level-button[data-level="2"] {
+        top: 78% !important;
+        left: 99% !important;
+    }
+
+    /* Nivel 3: nube dorada superior derecha */
+
+    #nextScreen .level-button[data-level="3"] {
+        top: 47% !important;
+        left: 116% !important;
+    }
+
+    /* Nivel 4: nube superior izquierda */
+
+    #nextScreen .level-button[data-level="4"] {
+        top: 43% !important;
+        left: -10% !important;
+    }
+
+    /* Nivel 5: nube superior central */
+
+    #nextScreen .level-button[data-level="5"] {
+        top: 35% !important;
+        left: 50% !important;
     }
 }
