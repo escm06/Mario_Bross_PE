@@ -148,7 +148,34 @@ try {
     completedLevels = [];
 
 }
+/* Reparar y sincronizar el desbloqueo de niveles */
+completedLevels = completedLevels
+    .map(function (level) {
+        return Number(level);
+    })
+    .filter(function (level) {
+        return Number.isInteger(level);
+    });
 
+const highestCompletedLevel =
+    completedLevels.length > 0
+        ? Math.max(...completedLevels)
+        : 0;
+
+highestUnlockedLevel = Math.min(
+    5,
+    Math.max(
+        1,
+        highestUnlockedLevel,
+        highestCompletedLevel + 1
+    )
+);
+
+/* Guardar el valor reparado */
+localStorage.setItem(
+    "marioPEHighestUnlockedLevel",
+    String(highestUnlockedLevel)
+);
 
 /*
     Obtiene los Soles PE guardados.

@@ -15,38 +15,38 @@
     const levelScreen = document.getElementById("nextScreen");
     const pausePanel = document.getElementById("pausePanel");
 
-/* ELEMENTOS DEL SELECTOR DE PERSONAJES */
+    /* ELEMENTOS DEL SELECTOR DE PERSONAJES */
 
     const characterSelectButton =
-    document.getElementById("characterSelectButton");
+        document.getElementById("characterSelectButton");
 
     const characterSelector =
-    document.getElementById("characterSelector");
+        document.getElementById("characterSelector");
 
     const closeCharacterSelector =
-    document.getElementById("closeCharacterSelector");
+        document.getElementById("closeCharacterSelector");
 
     const previousCharacterButton =
-    document.getElementById("previousCharacterButton");
+        document.getElementById("previousCharacterButton");
 
     const nextCharacterButton =
-    document.getElementById("nextCharacterButton");
+        document.getElementById("nextCharacterButton");
 
     const characterCarouselTrack =
-    document.getElementById("characterCarouselTrack");
+        document.getElementById("characterCarouselTrack");
 
     const characterSlides =
-    Array.from(document.querySelectorAll(".character-slide"));
+        Array.from(document.querySelectorAll(".character-slide"));
 
     const characterDots =
-    Array.from(document.querySelectorAll(".character-dot"));
+        Array.from(document.querySelectorAll(".character-dot"));
 
     const chooseCharacterButtons =
-    Array.from(document.querySelectorAll(".choose-character-button"));
+        Array.from(document.querySelectorAll(".choose-character-button"));
     const characterAudioButtons =
-    Array.from(document.querySelectorAll(".character-audio-button"));
+        Array.from(document.querySelectorAll(".character-audio-button"));
     const selectedCharacterMessage =
-    document.getElementById("selectedCharacterMessage");
+        document.getElementById("selectedCharacterMessage");
 
     if (!canvas || !gameScreen) {
         console.warn("No se encontró el Canvas del juego.");
@@ -54,13 +54,17 @@
     }
 
     const ctx = canvas.getContext("2d");
+    const hudLevelNumber =
+    document.getElementById("hudLevelNumber");
 
+    const hudLevelName =
+    document.getElementById("hudLevelName");
     const hudHearts = document.getElementById("hudHearts");
     const hudCoins = document.getElementById("hudCoins");
     const hudSoles = document.getElementById("hudSoles");
     const hudTimer = document.getElementById("hudTimer");
     const gameMessage = document.getElementById("gameMessage");
-        const lifeWarning =
+    const lifeWarning =
         document.getElementById("lifeWarning");
 
     const lifeWarningSound =
@@ -86,6 +90,7 @@
     let viewHeight = VIEW_HEIGHT;
     let verticalOffset = 0;
     let gameState = "menu";
+    let currentLevelNumber = 1;
     let lastTime = 0;
     let levelTime = 0;
     let worldTime = 0;
@@ -107,39 +112,39 @@
 
     playerImage.src = "assets/sprites/personaje.png";
 
-/* =====================================================
-   SEGUNDO PERSONAJE: JACKSON Y SU LLAMA
-===================================================== */
+    /* =====================================================
+       SEGUNDO PERSONAJE: JACKSON Y SU LLAMA
+    ===================================================== */
 
-const llamaImage = new Image();
-let llamaImageLoaded = false;
+    const llamaImage = new Image();
+    let llamaImageLoaded = false;
 
-llamaImage.onload = function () {
-    llamaImageLoaded = true;
-};
+    llamaImage.onload = function () {
+        llamaImageLoaded = true;
+    };
 
-llamaImage.onerror = function () {
-    console.warn("No se pudo cargar personaje-llama.png");
-};
+    llamaImage.onerror = function () {
+        console.warn("No se pudo cargar personaje-llama.png");
+    };
 
-llamaImage.src = "assets/sprites/personaje-llama.png";
+    llamaImage.src = "assets/sprites/personaje-llama.png";
 
-/* Personaje seleccionado y guardado */
-const CHARACTER_STORAGE_KEY = "personajeSeleccionado";
+    /* Personaje seleccionado y guardado */
+    const CHARACTER_STORAGE_KEY = "personajeSeleccionado";
 
-let selectedCharacter =
-    localStorage.getItem(CHARACTER_STORAGE_KEY) || "jackson";
+    let selectedCharacter =
+        localStorage.getItem(CHARACTER_STORAGE_KEY) || "jackson";
 
-if (
-    selectedCharacter !== "jackson" &&
-    selectedCharacter !== "llama"
-) {
-    selectedCharacter = "jackson";
-}
+    if (
+        selectedCharacter !== "jackson" &&
+        selectedCharacter !== "llama"
+    ) {
+        selectedCharacter = "jackson";
+    }
 
-/* Diapositiva inicial del carrusel */
-let currentCharacterIndex =
-    selectedCharacter === "llama" ? 1 : 0;
+    /* Diapositiva inicial del carrusel */
+    let currentCharacterIndex =
+        selectedCharacter === "llama" ? 1 : 0;
 
     playerImage.addEventListener("load", () => {
         playerImageLoaded = true;
@@ -404,7 +409,241 @@ let currentCharacterIndex =
 
         particles = [];
     }
+    /* =====================================================
+       CREACIÓN DEL NIVEL 2: ZUMBI
+    ===================================================== */
 
+    function createLevelTwo() {
+        /* Posición de la meta */
+        goal.x = 6250;
+        goal.y = 430;
+
+        /* Suelo, rocas, puentes y plataformas móviles */
+        platforms = [
+            createPlatform(0, 620, 800, 120, "ground"),
+            createPlatform(1030, 620, 520, 120, "ground"),
+            createPlatform(1830, 620, 720, 120, "ground"),
+            createPlatform(2890, 620, 710, 120, "ground"),
+            createPlatform(3960, 620, 790, 120, "ground"),
+            createPlatform(5100, 620, 1400, 120, "ground"),
+
+            /* Primer puente */
+            createPlatform(815, 555, 175, 28, "wood"),
+
+            /* Camino rocoso */
+            createPlatform(1110, 510, 165, 30, "stone"),
+            createPlatform(1340, 445, 165, 30, "stone"),
+
+            /* Segundo puente */
+            createMovingPlatform(
+                1580,
+                535,
+                150,
+                28,
+                110,
+                0,
+                0.75
+            ),
+
+            createPlatform(1715, 485, 120, 28, "wood"),
+
+            /* Plataformas del bosque */
+            createPlatform(1990, 500, 170, 30, "stone"),
+            createPlatform(2240, 430, 180, 30, "wood"),
+
+            /* Puente largo */
+            createMovingPlatform(
+                2580,
+                535,
+                145,
+                28,
+                0,
+                85,
+                0.65
+            ),
+
+            createPlatform(2740, 500, 125, 28, "wood"),
+
+            /* Camino elevado */
+            createPlatform(3040, 500, 180, 30, "stone"),
+            createPlatform(3290, 430, 180, 30, "stone"),
+
+            /* Cruce móvil */
+            createMovingPlatform(
+                3640,
+                525,
+                155,
+                28,
+                125,
+                0,
+                0.8
+            ),
+
+            createPlatform(3820, 480, 135, 28, "wood"),
+
+            /* Zona rocosa final */
+            createPlatform(4140, 510, 180, 30, "stone"),
+            createPlatform(4390, 440, 170, 30, "stone"),
+
+            /* Último puente */
+            createMovingPlatform(
+                4780,
+                525,
+                150,
+                28,
+                0,
+                95,
+                0.85
+            ),
+
+            createPlatform(4960, 485, 135, 28, "wood"),
+
+            createPlatform(5320, 500, 180, 30, "stone"),
+            createPlatform(5590, 425, 170, 30, "stone"),
+            createPlatform(5850, 500, 180, 30, "wood")
+        ];
+
+
+        /* Bloques interactivos agregados a las plataformas */
+        platforms.push(
+            createBlock(410, 500),
+            createBlock(470, 500),
+            createBlock(1180, 390),
+            createBlock(2060, 440),
+            createBlock(2310, 370),
+            createBlock(3110, 440),
+            createBlock(4210, 450),
+            createBlock(4460, 380),
+            createBlock(5390, 440),
+            createBlock(5660, 365)
+);
+
+        /* Monedas del nivel */
+        coins = [
+            createCoin(210, 545),
+            createCoin(280, 545),
+            createCoin(350, 545),
+            createCoin(440, 445),
+            createCoin(500, 445),
+
+            createCoin(850, 500),
+            createCoin(920, 500),
+
+            createCoin(1100, 545),
+            createCoin(1160, 455),
+            createCoin(1230, 455),
+            createCoin(1380, 390),
+            createCoin(1460, 390),
+
+            createCoin(1610, 480),
+            createCoin(1690, 430),
+            createCoin(1900, 545),
+
+            createCoin(2020, 445),
+            createCoin(2100, 445),
+            createCoin(2270, 375),
+            createCoin(2350, 375),
+
+            createCoin(2600, 475),
+            createCoin(2680, 475),
+            createCoin(2780, 445),
+
+            createCoin(3000, 545),
+            createCoin(3070, 445),
+            createCoin(3150, 445),
+            createCoin(3320, 375),
+            createCoin(3400, 375),
+
+            createCoin(3670, 470),
+            createCoin(3750, 470),
+            createCoin(3860, 425),
+
+            createCoin(4060, 545),
+            createCoin(4170, 455),
+            createCoin(4250, 455),
+            createCoin(4420, 385),
+            createCoin(4500, 385),
+
+            createCoin(4810, 470),
+            createCoin(4890, 470),
+            createCoin(5000, 430),
+
+            createCoin(5200, 545),
+            createCoin(5350, 445),
+            createCoin(5430, 445),
+            createCoin(5620, 370),
+            createCoin(5700, 370),
+
+            createCoin(5900, 445),
+            createCoin(5980, 445),
+            createCoin(6100, 545)
+        ];
+
+        /* Enemigos más rápidos que en Zamora */
+        enemies = [
+            createEnemy(610, 568, 500, 750, 80),
+            createEnemy(1160, 568, 1060, 1480, 88),
+            createEnemy(1960, 568, 1870, 2200, 92),
+            createEnemy(2360, 568, 2250, 2480, 96),
+            createEnemy(3020, 568, 2940, 3250, 100),
+            createEnemy(3440, 568, 3310, 3560, 104),
+            createEnemy(4080, 568, 4000, 4320, 108),
+            createEnemy(4580, 568, 4430, 4700, 112),
+            createEnemy(5240, 568, 5140, 5480, 116),
+            createEnemy(5790, 568, 5660, 6040, 120)
+        ];
+
+        /* Obstáculos */
+        spikes = [
+            createSpike(690, 592, 70),
+            createSpike(1260, 592, 75),
+            createSpike(2150, 592, 80),
+            createSpike(3370, 592, 80),
+            createSpike(4300, 592, 85),
+            createSpike(5500, 592, 85),
+            createSpike(6030, 592, 75)
+        ];
+
+        /* Dos checkpoints */
+        checkpoints = [
+            {
+                x: 2200,
+                y: 470,
+                active: false
+            },
+            {
+                x: 4450,
+                y: 470,
+                active: false
+            }
+        ];
+
+        /* Mensajes propios de Zumbi */
+        tutorialSigns = [
+            {
+                x: 180,
+                y: 530,
+                text: "Bienvenido a Zumbi"
+            },
+            {
+                x: 760,
+                y: 530,
+                text: "Cruza los puentes con cuidado"
+            },
+            {
+                x: 1500,
+                y: 530,
+                text: "Observa las plataformas móviles"
+            },
+            {
+                x: 3550,
+                y: 530,
+                text: "Espera el momento correcto"
+            }
+        ];
+
+        particles = [];
+    }
     function createPlatform(x, y, width, height, type) {
         return {
             x,
@@ -499,54 +738,87 @@ let currentCharacterIndex =
     ===================================================== */
 
     function startLevel(levelNumber = 1) {
-            /* =====================================================
-       PANTALLA COMPLETA EN TELÉFONOS
-    ===================================================== */
+        /* =====================================================
+   PANTALLA COMPLETA EN TELÉFONOS
+===================================================== */
 
-    async function enterFullscreenLandscape() {
-        const isTouchDevice =
-            window.matchMedia("(pointer: coarse)").matches;
+        async function enterFullscreenLandscape() {
+            const isTouchDevice =
+                window.matchMedia("(pointer: coarse)").matches;
 
-        if (!isTouchDevice) {
-            return;
-        }
+            if (!isTouchDevice) {
+                return;
+            }
 
-        const page = document.documentElement;
+            const page = document.documentElement;
 
-        try {
-            if (!document.fullscreenElement) {
-                if (page.requestFullscreen) {
-                    await page.requestFullscreen({
-                        navigationUI: "hide"
-                    });
-                } else if (page.webkitRequestFullscreen) {
-                    await page.webkitRequestFullscreen();
+            try {
+                if (!document.fullscreenElement) {
+                    if (page.requestFullscreen) {
+                        await page.requestFullscreen({
+                            navigationUI: "hide"
+                        });
+                    } else if (page.webkitRequestFullscreen) {
+                        await page.webkitRequestFullscreen();
+                    }
                 }
+            } catch (error) {
+                console.log(
+                    "El navegador no permitió la pantalla completa."
+                );
             }
-        } catch (error) {
-            console.log(
-                "El navegador no permitió la pantalla completa."
-            );
-        }
 
-        try {
-            if (
-                screen.orientation &&
-                typeof screen.orientation.lock === "function"
-            ) {
-                await screen.orientation.lock("landscape");
+            try {
+                if (
+                    screen.orientation &&
+                    typeof screen.orientation.lock === "function"
+                ) {
+                    await screen.orientation.lock("landscape");
+                }
+            } catch (error) {
+                console.log(
+                    "La orientación deberá cambiarse manualmente."
+                );
             }
-        } catch (error) {
-            console.log(
-                "La orientación deberá cambiarse manualmente."
-            );
         }
-    }
-        if (Number(levelNumber) !== 1) {
+        const selectedLevelNumber = Number(levelNumber);
+
+        /* Por ahora solamente existen los niveles 1 y 2 */
+        if (
+            selectedLevelNumber !== 1 &&
+            selectedLevelNumber !== 2
+        ) {
             return;
         }
+
+        currentLevelNumber = selectedLevelNumber;
+const currentLevelName =
+    currentLevelNumber === 2
+        ? "Zumbi"
+        : "Zamora";
+
+if (hudLevelNumber) {
+    hudLevelNumber.textContent =
+        `NIVEL ${currentLevelNumber}`;
+}
+
+if (hudLevelName) {
+    hudLevelName.textContent =
+        currentLevelName;
+}
+
+canvas.setAttribute(
+    "aria-label",
+    `Nivel ${currentLevelNumber}: ${currentLevelName}`
+);
         enterFullscreenLandscape();
-        createLevelOne();
+
+        /* Crear el mapa correspondiente */
+        if (currentLevelNumber === 2) {
+            createLevelTwo();
+        } else {
+            createLevelOne();
+        }
         resizeCanvas();
         resetPlayer();
 
@@ -1007,7 +1279,7 @@ let currentCharacterIndex =
             return;
         }
 
-            lives -= 1;
+        lives -= 1;
         player.invulnerable = 1.8;
 
         if (lives === 1) {
@@ -1188,15 +1460,15 @@ let currentCharacterIndex =
             0,
             0,
             viewWidth,
-         viewHeight
+            viewHeight
         );
 
         drawBackground();
 
         ctx.save();
         ctx.translate(
-        -camera.x,
-        -verticalOffset
+            -camera.x,
+            -verticalOffset
         );
 
         drawRiver();
@@ -1582,7 +1854,7 @@ let currentCharacterIndex =
             ctx.restore();
         });
     }
-   
+
     function drawSpikes() {
         spikes.forEach((spike) => {
             const quantity =
@@ -1931,36 +2203,36 @@ let currentCharacterIndex =
         ctx.scale(player.direction, scaleY);
 
         /* Personaje que fue elegido en el menú */
-const usingLlama = selectedCharacter === "llama";
+        const usingLlama = selectedCharacter === "llama";
 
-const activePlayerImage =
-    usingLlama ? llamaImage : playerImage;
+        const activePlayerImage =
+            usingLlama ? llamaImage : playerImage;
 
-const activePlayerImageLoaded =
-    usingLlama ? llamaImageLoaded : playerImageLoaded;
+        const activePlayerImageLoaded =
+            usingLlama ? llamaImageLoaded : playerImageLoaded;
 
-if (activePlayerImageLoaded) {
-    /* La llama es un poco más grande dentro del nivel */
-    const drawWidth = usingLlama ? 96 : 76;
-    const drawHeight = usingLlama ? 118 : 95;
+        if (activePlayerImageLoaded) {
+            /* La llama es un poco más grande dentro del nivel */
+            const drawWidth = usingLlama ? 96 : 76;
+            const drawHeight = usingLlama ? 118 : 95;
 
-    ctx.drawImage(
-        activePlayerImage,
-        -drawWidth / 2,
-        -drawHeight,
-        drawWidth,
-        drawHeight
-    );
-} else {
-    drawFallbackPlayer();
-}
+            ctx.drawImage(
+                activePlayerImage,
+                -drawWidth / 2,
+                -drawHeight,
+                drawWidth,
+                drawHeight
+            );
+        } else {
+            drawFallbackPlayer();
+        }
 
         ctx.restore();
 
         /* Nombre discreto encima del personaje */
         const playerName = usingLlama
-    ? "Jackson y su llama"
-    : "Jackson QuissssPE";
+            ? "Jackson y su llama"
+            : "Jackson QuissssPE";
         const nameX = player.x + player.width / 2;
         const nameY = player.y - 12 - bounce;
 
@@ -2052,30 +2324,68 @@ if (activePlayerImageLoaded) {
         playSound("complete");
 
         if (typeof window.completeLevel === "function") {
-            window.completeLevel(1);
+            window.completeLevel(currentLevelNumber);
         }
+        const completedLevelName =
+    currentLevelNumber === 2
+        ? "Zumbi"
+        : "Zamora";
 
-        showResultPanel(`
-            <h2>¡NIVEL COMPLETADO!</h2>
-            <p><strong>Zamora</strong></p>
-            <p>Recompensa: <strong>50 Soles PE</strong></p>
-            <p>Monedas recogidas: <strong>${coinsCollected}</strong></p>
-            <p>Tiempo: <strong>${formatTime(levelTime)}</strong></p>
+const completedLevelReward =
+    currentLevelNumber === 2
+        ? 100
+        : 50;
 
-            <button type="button" data-result="next">
-                IR AL NIVEL 2
-            </button>
+const nextLevelNumber =
+    currentLevelNumber + 1;
+      showResultPanel(
+    `
+        <h2>¡NIVEL COMPLETADO!</h2>
 
-            <button type="button" data-result="repeat">
-                REPETIR
-            </button>
+        <p>
+            <strong>${completedLevelName}</strong>
+        </p>
 
-            <button type="button" data-result="map">
-                VOLVER AL MAPA
-            </button>
-        `);
+        <p>
+            Recompensa:
+            <strong>
+                ${completedLevelReward} Soles PE
+            </strong>
+        </p>
+
+        <p>
+            Monedas recogidas:
+            <strong>${coinsCollected}</strong>
+        </p>
+
+        <p>
+            Tiempo:
+            <strong>${formatTime(levelTime)}</strong>
+        </p>
+
+        <button
+            type="button"
+            data-result="next"
+        >
+            IR AL NIVEL ${nextLevelNumber}
+        </button>
+
+        <button
+            type="button"
+            data-result="repeat"
+        >
+            REPETIR
+        </button>
+
+        <button
+            type="button"
+            data-result="map"
+        >
+            VOLVER AL MAPA
+        </button>
+    `
+);
     }
-
     function showGameOver() {
         gameState = "gameover";
 
@@ -2329,7 +2639,7 @@ if (activePlayerImageLoaded) {
             !backgroundMusic.muted;
 
         if (!backgroundMusic.muted) {
-            backgroundMusic.play().catch(() => {});
+            backgroundMusic.play().catch(() => { });
         }
 
         if (musicButton) {
@@ -2530,7 +2840,7 @@ if (activePlayerImageLoaded) {
 
     document
         .querySelectorAll(
-            '.level-button[data-level="1"], [data-level="1"].level-button'
+            '.level-button[data-level="1"], .level-button[data-level="2"]'
         )
         .forEach((button) => {
             button.addEventListener(
@@ -2546,7 +2856,10 @@ if (activePlayerImageLoaded) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
 
-                    startLevel(1);
+                    const selectedLevel =
+                        Number(button.dataset.level);
+
+                    startLevel(selectedLevel);
                 },
                 true
             );
@@ -2694,7 +3007,7 @@ if (activePlayerImageLoaded) {
             isPhoneLandscape ? 3 : 2
         );
 
-                if (isPhoneLandscape) {
+        if (isPhoneLandscape) {
             /*
              * Mayor acercamiento y terreno
              * ligeramente más arriba.
@@ -2723,7 +3036,7 @@ if (activePlayerImageLoaded) {
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
     }
-  
+
     window.addEventListener(
         "resize",
         resizeCanvas
@@ -2768,241 +3081,241 @@ if (activePlayerImageLoaded) {
 
         requestAnimationFrame(gameLoop);
     }
-/* =====================================================
-   CARRUSEL Y SELECCIÓN DE PERSONAJES
-===================================================== */
+    /* =====================================================
+       CARRUSEL Y SELECCIÓN DE PERSONAJES
+    ===================================================== */
 
-function updateCharacterCarousel(index) {
-    if (
-        !characterCarouselTrack ||
-        characterSlides.length === 0
-    ) {
-        return;
-    }
-
-    const totalCharacters = characterSlides.length;
-
-    currentCharacterIndex =
-        (index + totalCharacters) % totalCharacters;
-
-    characterCarouselTrack.style.transform =
-        `translateX(-${currentCharacterIndex * 100}%)`;
-
-    characterSlides.forEach(function (slide, slideIndex) {
-        slide.classList.toggle(
-            "active",
-            slideIndex === currentCharacterIndex
-        );
-    });
-
-    characterDots.forEach(function (dot, dotIndex) {
-        dot.classList.toggle(
-            "active",
-            dotIndex === currentCharacterIndex
-        );
-    });
-
-    chooseCharacterButtons.forEach(function (button) {
-        const isSelected =
-            button.dataset.selectCharacter === selectedCharacter;
-
-        button.classList.toggle("selected", isSelected);
-        button.textContent = isSelected ? "ELEGIDO" : "ELEGIR";
-    });
-}
-
-function openCharacterSelector() {
-    if (!characterSelector) {
-        return;
-    }
-
-    currentCharacterIndex =
-        selectedCharacter === "llama" ? 1 : 0;
-
-    updateCharacterCarousel(currentCharacterIndex);
-
-    characterSelector.classList.add("visible");
-    characterSelector.setAttribute("aria-hidden", "false");
-
-    if (backgroundMusic && !backgroundMusic.muted) {
-        backgroundMusic.volume = 0.12;
-    }
-}
-
-function closeCharacterSelectorMenu() {
-    if (!characterSelector) {
-        return;
-    }
-
-    characterSelector.classList.remove("visible");
-    characterSelector.setAttribute("aria-hidden", "true");
-
-    if (backgroundMusic) {
-        backgroundMusic.volume = 0.25;
-    }
-}
-
-function chooseCharacter(characterId) {
-    selectedCharacter = characterId;
-
-    localStorage.setItem(
-        CHARACTER_STORAGE_KEY,
-        selectedCharacter
-    );
-
-    if (selectedCharacterMessage) {
-        selectedCharacterMessage.textContent =
-            selectedCharacter === "llama"
-                ? "Jackson y su llama seleccionado"
-                : "Jackson QuissssPE seleccionado";
-    }
-
-    updateCharacterCarousel(currentCharacterIndex);
-
-    window.setTimeout(function () {
-        closeCharacterSelectorMenu();
-    }, 650);
-}
-
-/* Abrir el menú */
-if (characterSelectButton) {
-    characterSelectButton.addEventListener("click", function () {
-        openCharacterSelector();
-    });
-}
-
-/* Cerrar con la X */
-if (closeCharacterSelector) {
-    closeCharacterSelector.addEventListener("click", function () {
-        closeCharacterSelectorMenu();
-    });
-}
-
-/* Flecha izquierda */
-if (previousCharacterButton) {
-    previousCharacterButton.addEventListener("click", function () {
-        updateCharacterCarousel(currentCharacterIndex - 1);
-    });
-}
-
-/* Flecha derecha */
-if (nextCharacterButton) {
-    nextCharacterButton.addEventListener("click", function () {
-        updateCharacterCarousel(currentCharacterIndex + 1);
-    });
-}
-
-/* Botones ELEGIR */
-chooseCharacterButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        chooseCharacter(button.dataset.selectCharacter);
-    });
-});
-
-/* Puntos inferiores */
-characterDots.forEach(function (dot) {
-    dot.addEventListener("click", function () {
-        updateCharacterCarousel(
-            Number(dot.dataset.characterIndex)
-        );
-    });
-});
-/* =====================================================
-   AUDIOS DE LOS PERSONAJES
-===================================================== */
-
-let activeCharacterAudio = null;
-let activeCharacterAudioButton = null;
-
-function restoreCharacterMusicVolume() {
-    if (!backgroundMusic) {
-        return;
-    }
-
-    const selectorIsOpen =
-        characterSelector &&
-        characterSelector.classList.contains("visible");
-
-    backgroundMusic.volume = selectorIsOpen ? 0.12 : 0.25;
-}
-
-function stopCharacterAudio() {
-    if (activeCharacterAudio) {
-        activeCharacterAudio.pause();
-
-        try {
-            activeCharacterAudio.currentTime = 0;
-        } catch (error) {
-            console.warn("No se pudo reiniciar el audio.");
-        }
-    }
-
-    if (activeCharacterAudioButton) {
-        activeCharacterAudioButton.classList.remove("is-playing");
-    }
-
-    activeCharacterAudio = null;
-    activeCharacterAudioButton = null;
-
-    restoreCharacterMusicVolume();
-}
-
-characterAudioButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        const sameAudioIsPlaying =
-            activeCharacterAudioButton === button &&
-            activeCharacterAudio &&
-            !activeCharacterAudio.paused;
-
-        stopCharacterAudio();
-
-        /* Si se pulsa nuevamente, se detiene */
-        if (sameAudioIsPlaying) {
+    function updateCharacterCarousel(index) {
+        if (
+            !characterCarouselTrack ||
+            characterSlides.length === 0
+        ) {
             return;
         }
 
-        const audioPath = button.dataset.characterAudio;
+        const totalCharacters = characterSlides.length;
 
-        if (!audioPath) {
+        currentCharacterIndex =
+            (index + totalCharacters) % totalCharacters;
+
+        characterCarouselTrack.style.transform =
+            `translateX(-${currentCharacterIndex * 100}%)`;
+
+        characterSlides.forEach(function (slide, slideIndex) {
+            slide.classList.toggle(
+                "active",
+                slideIndex === currentCharacterIndex
+            );
+        });
+
+        characterDots.forEach(function (dot, dotIndex) {
+            dot.classList.toggle(
+                "active",
+                dotIndex === currentCharacterIndex
+            );
+        });
+
+        chooseCharacterButtons.forEach(function (button) {
+            const isSelected =
+                button.dataset.selectCharacter === selectedCharacter;
+
+            button.classList.toggle("selected", isSelected);
+            button.textContent = isSelected ? "ELEGIDO" : "ELEGIR";
+        });
+    }
+
+    function openCharacterSelector() {
+        if (!characterSelector) {
             return;
         }
 
-        activeCharacterAudio = new Audio(audioPath);
-        activeCharacterAudioButton = button;
+        currentCharacterIndex =
+            selectedCharacter === "llama" ? 1 : 0;
 
-        activeCharacterAudio.volume = 0.9;
-        button.classList.add("is-playing");
+        updateCharacterCarousel(currentCharacterIndex);
 
-        /* Bajar la música mientras habla el personaje */
+        characterSelector.classList.add("visible");
+        characterSelector.setAttribute("aria-hidden", "false");
+
         if (backgroundMusic && !backgroundMusic.muted) {
-            backgroundMusic.volume = 0.04;
+            backgroundMusic.volume = 0.12;
+        }
+    }
+
+    function closeCharacterSelectorMenu() {
+        if (!characterSelector) {
+            return;
         }
 
-        activeCharacterAudio.addEventListener("ended", function () {
-            stopCharacterAudio();
+        characterSelector.classList.remove("visible");
+        characterSelector.setAttribute("aria-hidden", "true");
+
+        if (backgroundMusic) {
+            backgroundMusic.volume = 0.25;
+        }
+    }
+
+    function chooseCharacter(characterId) {
+        selectedCharacter = characterId;
+
+        localStorage.setItem(
+            CHARACTER_STORAGE_KEY,
+            selectedCharacter
+        );
+
+        if (selectedCharacterMessage) {
+            selectedCharacterMessage.textContent =
+                selectedCharacter === "llama"
+                    ? "Jackson y su llama seleccionado"
+                    : "Jackson QuissssPE seleccionado";
+        }
+
+        updateCharacterCarousel(currentCharacterIndex);
+
+        window.setTimeout(function () {
+            closeCharacterSelectorMenu();
+        }, 650);
+    }
+
+    /* Abrir el menú */
+    if (characterSelectButton) {
+        characterSelectButton.addEventListener("click", function () {
+            openCharacterSelector();
         });
+    }
 
-        activeCharacterAudio.addEventListener("error", function () {
-            console.warn(
-                "No se pudo reproducir el audio:",
-                audioPath
-            );
-
-            stopCharacterAudio();
+    /* Cerrar con la X */
+    if (closeCharacterSelector) {
+        closeCharacterSelector.addEventListener("click", function () {
+            closeCharacterSelectorMenu();
         });
+    }
 
-        activeCharacterAudio.play().catch(function (error) {
-            console.warn(
-                "El navegador bloqueó el audio:",
-                error
-            );
+    /* Flecha izquierda */
+    if (previousCharacterButton) {
+        previousCharacterButton.addEventListener("click", function () {
+            updateCharacterCarousel(currentCharacterIndex - 1);
+        });
+    }
 
-            stopCharacterAudio();
+    /* Flecha derecha */
+    if (nextCharacterButton) {
+        nextCharacterButton.addEventListener("click", function () {
+            updateCharacterCarousel(currentCharacterIndex + 1);
+        });
+    }
+
+    /* Botones ELEGIR */
+    chooseCharacterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            chooseCharacter(button.dataset.selectCharacter);
         });
     });
-});
-/* Mostrar inicialmente el personaje guardado */
-updateCharacterCarousel(currentCharacterIndex);
+
+    /* Puntos inferiores */
+    characterDots.forEach(function (dot) {
+        dot.addEventListener("click", function () {
+            updateCharacterCarousel(
+                Number(dot.dataset.characterIndex)
+            );
+        });
+    });
+    /* =====================================================
+       AUDIOS DE LOS PERSONAJES
+    ===================================================== */
+
+    let activeCharacterAudio = null;
+    let activeCharacterAudioButton = null;
+
+    function restoreCharacterMusicVolume() {
+        if (!backgroundMusic) {
+            return;
+        }
+
+        const selectorIsOpen =
+            characterSelector &&
+            characterSelector.classList.contains("visible");
+
+        backgroundMusic.volume = selectorIsOpen ? 0.12 : 0.25;
+    }
+
+    function stopCharacterAudio() {
+        if (activeCharacterAudio) {
+            activeCharacterAudio.pause();
+
+            try {
+                activeCharacterAudio.currentTime = 0;
+            } catch (error) {
+                console.warn("No se pudo reiniciar el audio.");
+            }
+        }
+
+        if (activeCharacterAudioButton) {
+            activeCharacterAudioButton.classList.remove("is-playing");
+        }
+
+        activeCharacterAudio = null;
+        activeCharacterAudioButton = null;
+
+        restoreCharacterMusicVolume();
+    }
+
+    characterAudioButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const sameAudioIsPlaying =
+                activeCharacterAudioButton === button &&
+                activeCharacterAudio &&
+                !activeCharacterAudio.paused;
+
+            stopCharacterAudio();
+
+            /* Si se pulsa nuevamente, se detiene */
+            if (sameAudioIsPlaying) {
+                return;
+            }
+
+            const audioPath = button.dataset.characterAudio;
+
+            if (!audioPath) {
+                return;
+            }
+
+            activeCharacterAudio = new Audio(audioPath);
+            activeCharacterAudioButton = button;
+
+            activeCharacterAudio.volume = 0.9;
+            button.classList.add("is-playing");
+
+            /* Bajar la música mientras habla el personaje */
+            if (backgroundMusic && !backgroundMusic.muted) {
+                backgroundMusic.volume = 0.04;
+            }
+
+            activeCharacterAudio.addEventListener("ended", function () {
+                stopCharacterAudio();
+            });
+
+            activeCharacterAudio.addEventListener("error", function () {
+                console.warn(
+                    "No se pudo reproducir el audio:",
+                    audioPath
+                );
+
+                stopCharacterAudio();
+            });
+
+            activeCharacterAudio.play().catch(function (error) {
+                console.warn(
+                    "El navegador bloqueó el audio:",
+                    error
+                );
+
+                stopCharacterAudio();
+            });
+        });
+    });
+    /* Mostrar inicialmente el personaje guardado */
+    updateCharacterCarousel(currentCharacterIndex);
     resizeCanvas();
     requestAnimationFrame(gameLoop);
 })();
